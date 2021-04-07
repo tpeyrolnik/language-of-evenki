@@ -1,0 +1,76 @@
+def transliteration(word: str) -> str:
+    for key in vowels.keys():
+        word = word.replace(key, vowels[key])
+    if word.startswith('e'):
+        word = 'ә' + word[1:]
+    for key in equiv.keys():
+        word = word.replace(key, equiv[key])
+    for key in pairs.keys():
+        word = word.replace(key, pairs[key])
+    return word
+
+
+def dict_flat(my,my_gotov):
+    for key, value in my.items():
+        if key == 'text':
+
+            text_list = my[key].split(' ')
+
+            count = 0
+            for chat_word in text_list:
+                for word in updated_corpus:
+                    if word in chat_word:
+                        count += 1
+            if count > len(text_list) / 2:
+                print(my_gotov[key])
+                my_gotov['lang'] = 'even'
+            else:
+                my_gotov['lang'] = 'rus'
+            print(my_gotov)
+
+        if type(my[key]) == dict:
+            dict_flat(my[key],  my_gotov[key])
+
+import json
+import csv
+
+
+vowels = {'а̄': 'ā', 'ō': 'ō', 'ē': 'ē', 'ū': 'ū', 'ī': 'ī', 'ə̄': 'ə', 'ә̄': 'ə'}
+
+equiv = {'a': 'а', '\'': 'ь', '’': 'ь', 'b': 'б', 'v': 'в', 'g': 'г', 'd': 'д',
+         'k': 'к', 'l': 'л', 'm': 'м', 'n': 'н', 'p': 'п', 'r': 'р', 's': 'с',
+         't': 'т', 'c': 'ц', 'f': 'ф', 'x': 'х', 'h': 'х', 'γ': 'г', 'š': 'ш',
+         'w': 'в', 'i': 'и', 'j': 'й', 'ŋ': 'нг', 'č': 'ч', 'ž': 'ж', 'ǯ': 'з',
+         'y': 'ы', 'o': 'о', 'u': 'у', 'e': 'е', 'ď': 'дь', 'ə': 'э', 'ā': 'ā',
+         'ō': 'ō', 'ɨ': 'ы', 'ū': 'ӯ', 'ī': 'ӣ', 'ε': 'ε', 'ń': 'нь',
+         'ś': 'сь', 'í': 'и', 'z': 'з', 'ē': 'ē', 'ә': 'э', 'ō': 'ō',
+         '́': '', 'ɔ': 'о', 'ť': 'ть', '̅': '', 'а': 'а'}
+
+pairs = {'шь': 'щ', 'ьа': 'я', 'ьо': 'ё', 'ьэ': 'е', 'ьу': 'ю', 'ьы': 'и',
+         'ьи': 'и', 'ье': 'е', 'йу': 'ю', 'йо': 'ё', 'йэ': 'е',
+         'йа': 'я', 'тс': 'ц', 'йы': 'и', 'йā': 'я̄', 'ьā': 'я̄', 'йō': 'ё',
+         'ьō': 'ё', 'йӯ': 'ю̄', 'ьӯ': 'ю̄', 'йē': 'ē', 'ьē': 'ē'}
+
+corpus = []
+updated_corpus = []
+kirill = 'абвгдеёжзийклмнопрстуфхцчшщьыъэюя'
+
+with open('morpheme_dictionary.csv', encoding='utf-16') as corpus_file:
+    reader = csv.DictReader(corpus_file, delimiter='\t')
+    for row in reader:
+        corpus_di = dict(row)
+        for w, a in corpus_di.items():
+            n = True
+            for i in kirill:
+                if i in corpus_di['morpheme'] or corpus_di['morpheme'] in corpus:
+                    n = False
+            if n:
+                corpus.append(corpus_di['morpheme'])
+    for each_word in corpus:
+        cyr_word = transliteration(each_word)
+        updated_corpus.append(cyr_word)
+
+with open('evenki_every_day.json', encoding='utf-8') as chats_file:
+    chats = json.load(chats_file)
+    gotov=chats.copy()
+dict_flat(chats,gotov)
