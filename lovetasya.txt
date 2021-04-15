@@ -11,6 +11,7 @@ def transliteration(word: str) -> str:
 
 
 def dict_flat(my,my_gotov):
+    my_kotov = my_gotov.copy()
     for key, value in my.items():
         if key == 'text':
 
@@ -22,11 +23,11 @@ def dict_flat(my,my_gotov):
                     if word in chat_word:
                         count += 1
             if count > len(text_list) / 2:
-                print(my_gotov[key])
-                my_gotov['lang'] = 'even'
+                print(my_kotov[key])
+                my_kotov['lang'] = 'even'
             else:
-                my_gotov['lang'] = 'rus'
-            print(my_gotov)
+                my_kotov['lang'] = 'rus'
+            return my_kotov
 
         if type(my[key]) == dict:
             dict_flat(my[key],  my_gotov[key])
@@ -73,4 +74,4 @@ with open('morpheme_dictionary.csv', encoding='utf-16') as corpus_file:
 with open('evenki_every_day.json', encoding='utf-8') as chats_file:
     chats = json.load(chats_file)
     gotov=chats.copy()
-dict_flat(chats,gotov)
+print (dict_flat(chats,gotov))
