@@ -1,19 +1,23 @@
-import urllib.request  
+import urllib.request
 import requests
 import json
+
+
 TOKEN = 'b1fab66eb1fab66eb1fab66e07b18dd1f0bb1fab1fab66ed18d47782660c8c8f8cb9335'
 data = requests.get(
-    'https://api.vk.com/method/wall.get', 
+    'https://api.vk.com/method/wall.get',
     params={
         "owner_id": -8955594,
         "count": 10,
-        "v":"5.92",
+        "v": "5.92",
         "access_token": TOKEN
-        
+
     }
 ).json()
-#print (data)
-  
+
+
+
+
 def transliteration(word: str) -> str:
     for key in vowels.keys():
         word = word.replace(key, vowels[key])
@@ -24,32 +28,42 @@ def transliteration(word: str) -> str:
     for key in pairs.keys():
         word = word.replace(key, pairs[key])
     return word
-def detect_lang (text_list):
-  count = 0
-  for chat_word in text_list:
-      for word in updated_corpus:
-          if word in chat_word:
-              count += 1
-  if count > len(text_list) / 2:
-      #print(my_kotov[key])
-      lang = 'even'
-  else:
-      lang = 'rus'
-  return lang
-  
+
+
+def detect_lang(text_list):
+    count = 0
+    for chat_word in text_list:
+        for word in updated_corpus:
+            if word in chat_word:
+                count += 1
+    if count > len(text_list) / 2:
+        lang = 'even'
+    else:
+        lang = 'rus'
+    return lang
+
 
 def dict_flat(my_gotov):
     my_kotov = my_gotov.copy()
     for key, value in my_gotov.items():
         if key == 'text':
             text_list = my_gotov[key].split(' ')
-            my_kotov['lang'] = detect_lang(text_list)
+            my_kotov["lang"] = detect_lang(text_list)
+            # print("yay!")
         if type(my_gotov[key]) == dict:
-            dict_flat(my_gotov[key])
+            my_kotov[key] = dict_flat(my_gotov[key])
+            print("stepped inside!")
+        elif type(my_gotov[key]) == list:
+            processed_cats = []
+            for el in my_gotov[key]:
+                processed_cats.append(dict_flat(el))
+            my_kotov[key] = processed_cats
+
     return my_kotov
+
+
 import json
 import csv
-
 
 vowels = {'а̄': 'ā', 'ō': 'ō', 'ē': 'ē', 'ū': 'ū', 'ī': 'ī', 'ə̄': 'ə', 'ә̄': 'ə'}
 
@@ -86,8 +100,7 @@ with open('morpheme_dictionary.csv', encoding='utf-16') as corpus_file:
         cyr_word = transliteration(each_word)
         updated_corpus.append(cyr_word)
 
-#with open('evenki_every_day.json', encoding='utf-8') as chats_file:
 chats = data
-gotov=chats.copy()
-with open('new.txt', 'w', encoding = 'utf-8') as failik:
-  print (dict_flat(gotov), file = failik)
+gotov = chats.copy()
+with open('new.json', 'w', encoding='utf-8') as failik:
+    json.dump(dict_flat(gotov), failik)
