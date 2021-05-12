@@ -52,7 +52,7 @@ def dict_flat(my_gotov):
             # print("yay!")
         if type(my_gotov[key]) == dict:
             my_kotov[key] = dict_flat(my_gotov[key])
-            print("stepped inside!")
+            # print("stepped inside!")
         elif type(my_gotov[key]) == list:
             processed_cats = []
             for el in my_gotov[key]:
