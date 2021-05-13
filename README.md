@@ -20,7 +20,7 @@ gotov = chats.copy()`
 
 с помощью рекурсии ищет ключ ‘text’ и токенизирует текст сообщения/поста, оставляя только буквы (потому что язык определяется по словам, а слова состоят из букв), вызывает вторую функцию `detect_lang` и по окончании её работы изменяет `my_kotov`, добавляя в него новый ключ : 
 
-`my_kotov = my_gotov.copy()
+`   my_kotov = my_gotov.copy()
     for key, value in my_gotov.items():
         if key == 'text':
             text_list = my_gotov[key].split(' ')
@@ -31,7 +31,7 @@ gotov = chats.copy()`
             processed_cats = []
             for el in my_gotov[key]:
                 processed_cats.append(dict_flat(el))
-            my_kotov[key] = processed_cats `
+            my_kotov[key] = processed_cats  `
 
  возвращает `my_kotov`:
  
