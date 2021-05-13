@@ -33,9 +33,9 @@ gotov = chats.copy()`
                 processed_cats.append(dict_flat(el))
             my_kotov[key] = processed_cats```
 
- возвращает `my_kotov`:
+возвращает `my_kotov`:
  
-`return my_kotov`
+ `return my_kotov`
 
 
 `detect_lang(text_list)`
