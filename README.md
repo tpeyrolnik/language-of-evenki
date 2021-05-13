@@ -32,6 +32,7 @@ gotov = chats.copy()`
             for el in my_gotov[key]:
                 processed_cats.append(dict_flat(el))
             my_kotov[key] = processed_cats```
+            
 
 возвращает `my_kotov`:
  
