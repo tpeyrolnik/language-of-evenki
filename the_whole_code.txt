@@ -1,6 +1,8 @@
 import urllib.request
 import requests
 import json
+import string
+import re
 
 
 TOKEN = 'b1fab66eb1fab66eb1fab66e07b18dd1f0bb1fab1fab66ed18d47782660c8c8f8cb9335'
@@ -47,7 +49,9 @@ def dict_flat(my_gotov):
     my_kotov = my_gotov.copy()
     for key, value in my_gotov.items():
         if key == 'text':
-            text_list = my_gotov[key].split(' ')
+            #text_list = my_gotov[key].split() 
+            text_list = re.split('[^А-Яа-я]+',my_gotov[key])
+            print (text_list)
             my_kotov["lang"] = detect_lang(text_list)
             # print("yay!")
         if type(my_gotov[key]) == dict:
