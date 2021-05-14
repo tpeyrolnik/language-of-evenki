@@ -49,8 +49,7 @@ def detect_lang(text_list):
 def dict_flat(my_gotov):
     my_kotov = my_gotov.copy()
     for key, value in my_gotov.items():
-        if key == 'text':
-            #text_list = my_gotov[key].split() 
+        if key == 'text': 
             text_list = re.split('[^А-Яа-я]+',my_gotov[key])
             print (text_list)
             my_kotov["lang"] = detect_lang(text_list)
