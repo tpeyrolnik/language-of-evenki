@@ -67,7 +67,6 @@ def dict_flat(my_gotov):
     return my_kotov
 
 
-import json
 import csv
 
 vowels = {'а̄': 'ā', 'ō': 'ō', 'ē': 'ē', 'ū': 'ū', 'ī': 'ī', 'ə̄': 'ə', 'ә̄': 'ə'}
