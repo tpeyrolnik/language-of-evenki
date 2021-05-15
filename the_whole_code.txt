@@ -4,22 +4,9 @@ import json
 import string
 import re
 
-
-TOKEN = 'b1fab66eb1fab66eb1fab66e07b18dd1f0bb1fab1fab66ed18d47782660c8c8f8cb9335'
-data = requests.get(
-    'https://api.vk.com/method/wall.get',
-    params={
-        "owner_id": -8955594,
-        "count": 10,
-        "v": "5.92",
-        "access_token": TOKEN
-
-    }
-).json()
-
-        # здесь берём данные из паблика вконтакте 
-
-
+with open('evenki_every_day.json', encoding='utf-8') as chats_file:
+    chats = json.load(chats_file)
+    gotov=chats.copy()
 
 def transliteration(word: str) -> str:
     for key in vowels.keys():
@@ -103,7 +90,5 @@ with open('morpheme_dictionary.csv', encoding='utf-16') as corpus_file:
         cyr_word = transliteration(each_word)
         updated_corpus.append(cyr_word)
 
-chats = data
-gotov = chats.copy()
 with open('new.json', 'w', encoding='utf-8') as failik:
     json.dump(dict_flat(gotov), failik)
